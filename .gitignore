@@ -43,6 +43,9 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+# Compiled class file
+*.class
+
 # Scala IDE specific (Scala & Java development for Eclipse)
 .cache-main
 .scala_dependencies
