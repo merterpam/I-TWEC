@@ -4,7 +4,7 @@ I-TWEC is an interactive clustering tool for Twitter. Using substring similarity
 
 I-TWEC is composed of two parts: Suffix Tree basedTweet Clustering Tool (ST-TWEC) and its interactive part. TWEC is a stand-alone application which is able lexically cluster tweets and it is written in Java. The source code of ST-TWEC in the [GitHub page](https://github.com/merterpam/ST-TWEC).
 
-I-TWEC is the interactive part of the algorithm and it works together with ST-TWEC. I-TWEC is written with Java Servlets and require TWEC as a dependency to work correctly. Using I-TWEC, the end-user is able to adjust lexical clustering and semantic relatedness thresholds, merge clusters and export clustering/evaluation results.
+I-TWEC is the interactive part of the algorithm and it works together with ST-TWEC. I-TWEC is written with Java Servlets and require TWEC as a dependency to work correctly. Using I-TWEC, the end-user is able to adjust lexical clustering and semantic relatedness thresholds, merge clusters and export clustering/evaluation results. I-TWEC can be found online [here](http://sky.sabanciuniv.edu:8080/I-TWEC/).
 
 # Usage
 
