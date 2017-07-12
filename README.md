@@ -24,11 +24,11 @@ In order to use this tool, you require Java Runtime Environment 8 and Apache Tom
   * Add the following to the <dependencies> section of your pom.xml:
 
 ```
-	<dependency>
-	    <groupId>com.github.merterpam</groupId>
-	    <artifactId>I-TWEC</artifactId>
-	    <version>v1.0.0</version>
-	</dependency>
+<dependency>
+	<groupId>com.github.merterpam</groupId>
+	<artifactId>I-TWEC</artifactId>
+	<version>v1.0.0</version>
+</dependency>
 ```
 
 ### 2. War file only
