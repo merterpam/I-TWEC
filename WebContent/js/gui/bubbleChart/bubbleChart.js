@@ -118,7 +118,7 @@ var BubbleChart;
 		var clusterElement = clusterResponse.clusters[dataL.id];
 		for(var i = 0; i < 10 && i < clusterElement.elements.length; i++)
 		{
-			var tweet = clusterElement.elements[i].tweet;
+			var tweet = clusterElement.elements[i].tweet.tweet;
 			var count = clusterElement.elements[i].tweetSize;
 			
 			content += '<tr><td colspan="2">' + tweet + '</td><td>' + count + '</td></tr> \n'
