@@ -8,7 +8,7 @@ I-TWEC is the interactive part of the algorithm and it works together with ST-TW
 
 # Usage
 
-In order to use this tool, you require Java Runtime Environment 8 and Apache Tomcat 9.0. You can use this tool by using Maven to downlaod the code as dependency or putting the War file into Tomcat:
+In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase) and [Apache Tomcat 9.0](https://tomcat.apache.org). You can use this tool by using Maven to downlaod the code as dependency or putting the War file into Tomcat:
 
 ### 1. Maven
 
