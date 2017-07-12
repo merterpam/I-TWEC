@@ -7,11 +7,11 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.erpam.mert.TWEC.ClusterEvaluator;
-import com.erpam.mert.TWEC.TweetClusteringTool;
-import com.erpam.mert.TWEC.TweetPreprocessor;
-import com.erpam.mert.TWEC.model.Cluster;
-import com.erpam.mert.TWEC.model.Tweet;
+import com.erpam.mert.ST_TWEC.ClusterEvaluator;
+import com.erpam.mert.ST_TWEC.TweetClusteringTool;
+import com.erpam.mert.ST_TWEC.TweetPreprocessor;
+import com.erpam.mert.ST_TWEC.model.Cluster;
+import com.erpam.mert.ST_TWEC.model.Tweet;
 import com.erpam.mert.utils.Utility;
 import com.erpam.mert.utils.io.WordEmbeddingLoader;
 import com.models.response.ClusterResponse;
@@ -20,7 +20,7 @@ import com.models.response.SentimentResponse;
 
 public class ClusterApplication {
 
-	//Input
+	//Input 
 	private List<Tweet> tweets;
 
 	//Serialization - Deserialization
