@@ -33,6 +33,7 @@ You can clone the GitHub project and run it on Eclipse/IntelliJ. You can modify 
 <dependency>
 	<groupId>com.github.merterpam</groupId>
 	<artifactId>I-TWEC</artifactId>
+	<type>war</type>
 	<version>v1.0.2</version>
 </dependency>
 ```
