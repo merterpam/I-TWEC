@@ -81,6 +81,7 @@ function reClusterSend()
 
 	d3.select("#mainSection").html('');
 	$(".overlay").show();
+	$('#loading-text').html('Loading');
 	$.ajax({
 		url: 'uploadClusterThreshold',
 		type: 'POST',
@@ -93,6 +94,10 @@ function reClusterSend()
 			$(".overlay").hide();
 			loadDashboard();
 			loadSentimentData();
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$(".overlay").hide();
+			alert("Request Error: " + errorThrown); 
 		},
 		cache: false
 	});
