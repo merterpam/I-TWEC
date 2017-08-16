@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -18,7 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import com.application.ClusterApplication;
 import com.erpam.mert.ST_TWEC.model.Tweet;
-import com.erpam.mert.utils.io.WordEmbeddingLoader;
+import com.erpam.mert.utils.io.WordEmbeddingsLoader;
 import com.models.response.ClusterResponse;
 import com.models.response.ErrorResponse;
 import com.utils.Utility;
@@ -30,21 +28,7 @@ import com.utils.Utility;
 @MultipartConfig
 public class ClusterServlet extends HttpServlet {
 
-	private static WordEmbeddingLoader wordEmbeddingDict;
-
-	private static final String wordEmbeddingsPath = "/Users/mert/Documents/WordEmbedding/GoogleNews-vectors-negative300.bin";
-
 	private static final long serialVersionUID = 1L;
-
-
-
-	public static WordEmbeddingLoader getWordEmbeddingDict() {
-		return wordEmbeddingDict;
-	}
-
-	public static void setWordEmbeddingDict(WordEmbeddingLoader wordEmbeddingDict) {
-		ClusterServlet.wordEmbeddingDict = wordEmbeddingDict;
-	}
 
 	/**
 	 * Initialize servlet and word embeddings directory
@@ -53,19 +37,6 @@ public class ClusterServlet extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		if(getWordEmbeddingDict() == null)
-		{
-			String wDirectory = "";
-			try {
-				wDirectory = (String) new InitialContext().lookup("java:comp/env/com.I-TWEC.wordEmbeddingsPath");
-			} catch (NamingException e) {
-				wDirectory = wordEmbeddingsPath;
-				e.printStackTrace();
-			}
-
-			setWordEmbeddingDict(new WordEmbeddingLoader(wDirectory));
-			getWordEmbeddingDict().generateModel();
-		}
 	}
 
 	/**
@@ -83,7 +54,7 @@ public class ClusterServlet extends HttpServlet {
 		application.setClusterThreshold(Float.parseFloat(request.getParameter("clusterThreshold")));
 
 		application.setEmbeddingDimension(Integer.parseInt(request.getParameter("embeddingDimension")));
-		application.setWordEmbeddingDict(getWordEmbeddingDict());
+		application.setWordEmbeddingDict(WordEmbeddingsLoader.getInstance());
 		application.setClusterLimit(Integer.parseInt(request.getParameter("clusterLimit")));
 		application.setSentimentThreshold(Float.parseFloat(request.getParameter("sentimentThreshold")));
 		application.setShortTextLength(Integer.parseInt(request.getParameter("shortTextLength")));
