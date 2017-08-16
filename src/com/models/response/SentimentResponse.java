@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.erpam.mert.utils.io.WordEmbeddingLoader;
+import com.erpam.mert.utils.io.WordEmbeddingsLoader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -63,7 +63,7 @@ public class SentimentResponse implements Serializable {
 	}
 
 
-	public void createSentimentMatrix(WordEmbeddingLoader wordEmbeddingDict, int dimension)
+	public void createSentimentMatrix(WordEmbeddingsLoader wordEmbeddingDict, int dimension)
 	{
 		float minVal = Float.MAX_VALUE, maxVal = Float.MIN_VALUE; 
 		for(int i = 0; i < size; i++)
@@ -123,7 +123,7 @@ public class SentimentResponse implements Serializable {
 			return (float) (dotProduct /sqrtVectors);
 	}
 
-	private float[] calculateEmbeddingValues(String label, WordEmbeddingLoader wordEmbeddingDict, int dimension)
+	private float[] calculateEmbeddingValues(String label, WordEmbeddingsLoader wordEmbeddingDict, int dimension)
 	{
 		String[] firstLabelSplits = label.split(" ");
 		dimension = Math.min(dimension, wordEmbeddingDict.getVectorSize());
@@ -146,7 +146,7 @@ public class SentimentResponse implements Serializable {
 	}
 
 	@SuppressWarnings("unused")
-	private float[] calculateAlgebra(String label1, String label2, WordEmbeddingLoader wordEmbeddingDict, int dimension, boolean minus)
+	private float[] calculateAlgebra(String label1, String label2, WordEmbeddingsLoader wordEmbeddingDict, int dimension, boolean minus)
 	{
 		dimension = Math.min(dimension, wordEmbeddingDict.getVectorSize());
 		float[] firstlabelValues = new float[dimension];

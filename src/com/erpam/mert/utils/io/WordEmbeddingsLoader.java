@@ -5,32 +5,50 @@ import com.utils.Utility;
 import java.io.*;
 import java.util.HashMap;
 
-public class WordEmbeddingLoader {
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
+public class WordEmbeddingsLoader {
+
+	private static String wordEmbeddingsPath = "/Users/mert/Documents/WordEmbedding/GoogleNews-vectors-negative300.bin";
+	private static WordEmbeddingsLoader wordEmbeddingsLoader;
+	
 	private HashMap<String, Long> wordMapping;
 	private RandomAccessFile stream;
 	private static final int MAX_SIZE = 50;
 	private int wordCount;
 	private int vectorSize;
 
-	private String modelFile;
-
-	public WordEmbeddingLoader(String modelFile)
-	{
-		this.modelFile = modelFile;
-		this.wordMapping  = new HashMap<String, Long>();
+	public static void setWordEmbeddingsPath(String newWordEmbeddingsPath) {
+		wordEmbeddingsPath = newWordEmbeddingsPath;
 	}
-
-	public void generateModel()
+	
+	public static WordEmbeddingsLoader getInstance() {
+		if(wordEmbeddingsLoader == null) {
+			String wDirectory = "";
+			try {
+				wDirectory = (String) new InitialContext().lookup("java:comp/env/com.I-TWEC.wordEmbeddingsPath");
+				wordEmbeddingsPath = wDirectory;
+			} catch (NamingException e) {
+				e.printStackTrace();
+			}
+			wordEmbeddingsLoader = new WordEmbeddingsLoader();
+		}
+		
+		return wordEmbeddingsLoader;
+	}
+	
+	private WordEmbeddingsLoader()
 	{
+		wordMapping  = new HashMap<String, Long>();
 		long startTime = System.nanoTime();
 		try {
-			stream = new RandomAccessFile(modelFile, "r");
+			stream = new RandomAccessFile(wordEmbeddingsPath, "r");
 
 			wordCount = Integer.parseInt(readString());
 			vectorSize = Integer.parseInt(readString());
 
-			if(!deSerializeHash())
+			if(!deserializeHash())
 			{
 				readBinaryModel();
 				serializeHash();
@@ -124,7 +142,7 @@ public class WordEmbeddingLoader {
 	{
 		FileOutputStream fos;
 		try {
-			fos = new FileOutputStream(modelFile + "_ser");
+			fos = new FileOutputStream(wordEmbeddingsPath + "_ser");
 
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(wordMapping);
@@ -137,11 +155,11 @@ public class WordEmbeddingLoader {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private boolean deSerializeHash()
+	private boolean deserializeHash()
 	{
 		try
 		{
-			FileInputStream fis = new FileInputStream(modelFile + "_ser");
+			FileInputStream fis = new FileInputStream(wordEmbeddingsPath + "_ser");
 			ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream (fis));
 			wordMapping = (HashMap) ois.readObject();
 			ois.close();
