@@ -13,7 +13,7 @@ import com.erpam.mert.ST_TWEC.TweetPreprocessor;
 import com.erpam.mert.ST_TWEC.model.Cluster;
 import com.erpam.mert.ST_TWEC.model.Tweet;
 import com.erpam.mert.utils.Utility;
-import com.erpam.mert.utils.io.WordEmbeddingLoader;
+import com.erpam.mert.utils.io.WordEmbeddingsLoader;
 import com.models.response.ClusterResponse;
 import com.models.response.Label;
 import com.models.response.SentimentResponse;
@@ -33,7 +33,7 @@ public class ClusterApplication {
 
 	//Sentiment Relatedness
 	private int embeddingDimension;
-	private WordEmbeddingLoader wordEmbeddingDict;
+	private WordEmbeddingsLoader wordEmbeddingDict;
 	private int clusterLimit;
 	private float sentimentThreshold;
 	private int shortTextLength;
@@ -52,7 +52,7 @@ public class ClusterApplication {
 		return obj;
 	}
 
-	public SentimentResponse calculateLabelSentiment(int clusterLimit, ArrayList<Cluster> clusters, int dimension, float sentimentThreshold, int shortTextThreshold, WordEmbeddingLoader wordEmbeddingDict) {
+	public SentimentResponse calculateLabelSentiment(int clusterLimit, ArrayList<Cluster> clusters, int dimension, float sentimentThreshold, int shortTextThreshold, WordEmbeddingsLoader wordEmbeddingDict) {
 
 		long startTime = System.nanoTime();
 		ArrayList<Label> labels = new ArrayList<Label>();
@@ -226,7 +226,7 @@ public class ClusterApplication {
 		this.clusterThreshold = clusterThreshold;
 	}
 
-	public void setWordEmbeddingDict(WordEmbeddingLoader wordEmbeddingDict) {
+	public void setWordEmbeddingDict(WordEmbeddingsLoader wordEmbeddingDict) {
 		this.wordEmbeddingDict = wordEmbeddingDict;
 	}
 

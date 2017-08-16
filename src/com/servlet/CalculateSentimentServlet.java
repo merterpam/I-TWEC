@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.application.ClusterApplication;
+import com.erpam.mert.utils.io.WordEmbeddingsLoader;
 import com.models.response.SentimentResponse;
 
 /**
@@ -37,7 +38,7 @@ public class CalculateSentimentServlet extends HttpServlet {
 		
 		application.setDirectoryPath(directoryPath);
 		application.setEmbeddingDimension(Integer.parseInt(request.getParameter("embeddingDimension")));
-		application.setWordEmbeddingDict(ClusterServlet.getWordEmbeddingDict());
+		application.setWordEmbeddingDict(WordEmbeddingsLoader.getInstance());
 		application.setClusterLimit(Integer.parseInt(request.getParameter("clusterLimit")));
 		application.setSentimentThreshold(Float.parseFloat(request.getParameter("sentimentThreshold")));
 		application.setShortTextLength(Integer.parseInt(request.getParameter("shortTextLength")));
