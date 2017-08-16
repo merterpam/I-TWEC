@@ -79,23 +79,28 @@ public class ClusterApplication {
 		TweetPreprocessor tweetPreprocessor = new TweetPreprocessor(0.6f, tweets);
 		tweetPreprocessor.preProcessTweets();
 
-		clusterTool = new TweetClusteringTool(tweets);
-		clusterTool.prepareSuffixTree();
+		try {
+			clusterTool = new TweetClusteringTool(tweets);
+			clusterTool.prepareSuffixTree();
 
 
-		clusterTool.createClusters(clusterThreshold);
-		clusterTool.removeOverlappingAndMerge();
-		clusterTool.createAndExtendLabels();
+			clusterTool.createClusters(clusterThreshold);
+			clusterTool.removeOverlappingAndMerge();
+			clusterTool.createAndExtendLabels();
 
-		long endTime = System.nanoTime();
-		clusterTime = com.utils.Utility.convertElapsedTime(startTime, endTime);
+			long endTime = System.nanoTime();
+			clusterTime = com.utils.Utility.convertElapsedTime(startTime, endTime);
 
-		evaluator = new ClusterEvaluator(clusterTool, clusterThreshold, filename, tweetPreprocessor.getNoContentTweets(), tweets);
+			evaluator = new ClusterEvaluator(clusterTool, clusterThreshold, filename, tweetPreprocessor.getNoContentTweets(), tweets);
 
-		ClusterResponse cR = calculateClusterStatistics(clusterTool.getClusters());
-		asyncSentimentAndSerialization();
+			ClusterResponse cR = calculateClusterStatistics(clusterTool.getClusters());
+			asyncSentimentAndSerialization();
 
-		return cR;
+			return cR;
+		} catch (OutOfMemoryError e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public void mergeClusters(SentimentResponse sR)

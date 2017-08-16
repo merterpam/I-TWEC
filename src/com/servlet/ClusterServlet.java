@@ -102,7 +102,7 @@ public class ClusterServlet extends HttpServlet {
 				if(obj.getClusterSize() != 0) {
 					responseMessage = obj.toJSON();
 				} else {
-					responseMessage = new ErrorResponse("With the given dataset, we could not form clusters").toJSON();
+					responseMessage = new ErrorResponse("We could not form any clusters with the given dataset").toJSON();
 				}
 			} else {
 				responseMessage = new ErrorResponse("We could not process the data. Please try again later or try with a smaller set of data.").toJSON();;
