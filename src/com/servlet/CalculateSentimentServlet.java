@@ -37,7 +37,7 @@ public class CalculateSentimentServlet extends HttpServlet {
 		
 		application.setDirectoryPath(directoryPath);
 		application.setEmbeddingDimension(Integer.parseInt(request.getParameter("embeddingDimension")));
-		application.setWordEmbeddingDict(ClusterServlet.wordEmbeddingDict);
+		application.setWordEmbeddingDict(ClusterServlet.getWordEmbeddingDict());
 		application.setClusterLimit(Integer.parseInt(request.getParameter("clusterLimit")));
 		application.setSentimentThreshold(Float.parseFloat(request.getParameter("sentimentThreshold")));
 		application.setShortTextLength(Integer.parseInt(request.getParameter("shortTextLength")));
