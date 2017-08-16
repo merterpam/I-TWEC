@@ -8,7 +8,13 @@ I-TWEC is the interactive part of the algorithm and it works together with ST-TW
 
 # Usage
 
-In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase) and [Apache Tomcat 9.0](https://tomcat.apache.org). You can use this tool by using Maven to downlaod the code as dependency or putting the War file into Tomcat:
+In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase), [Apache Tomcat 9.0](https://tomcat.apache.org) and a word embeddings vector model. A pre-trained model based on Google News can be found on [word2vec tool]( https://code.google.com/archive/p/word2vec/). 
+
+You can use I-TWEC by using Maven to download the code as a dependency or putting the War file into Tomcat:
+
+### 1. Cloning
+
+You can clone the GitHub project and run it on Eclipse/IntelliJ. You can modify the static field WordEmbeddingsLoader#wordEmbeddingsPath to set the path of the word embeddings vector model.
 
 ### 1. Maven
 
@@ -31,7 +37,10 @@ In order to use this tool, you require [Java Runtime Environment 8](http://www.o
 </dependency>
 ```
 
+You can use the static method WordEmbeddingsLoader#setWordEmbeddingsPath to set the path of the word embeddings model.
+
 ### 2. War file only
 
-  * Download the [latest .war file](https://github.com/merterpam/I-TWEC/releases) from the releases section.
-  * Add it to the webapps directory inside Apache Tomcat directory. The application will be live on http://yourhost/I-TWEC . 
+  * Download the [latest .war and config file](https://github.com/merterpam/I-TWEC/releases) from the releases section.
+  * Add the war file to the webapps directory inside Apache Tomcat directory($CATALINA_BASE/webapps). The application will be live on http://yourhost/I-TWEC . 
+  * Modify the config file to set the path of the word embeddings model and add it to the host directory inside the Apache Tomcat conf directory ($CATALINA_BASE/conf/[yourhost]/). If the directory does not exist, you can either create it yourself, or run the web application once to let it be created automatically.
