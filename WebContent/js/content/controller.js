@@ -45,6 +45,10 @@ function loadPage(id) {
 			if (id == 0) //Dashboard
 			{
 				loadDashboard();
+				
+				$('#sentimentFirst').hide();
+				$('#sentimentSecond').hide();
+				$('#sentimentSubmit').hide();
 				$('#fileSubmit').show();
 				gId = 0;
 			} else if (id == 1) {
@@ -54,6 +58,7 @@ function loadPage(id) {
 					$("#mainSection").html('');
 					$("#table").html('');
 					$(".overlay").show();
+					$('#loading-text').html('Loading');
 				}
 				gId = 1;
 				$('#fileSubmit').hide();
@@ -79,6 +84,7 @@ $("#fileForm").submit(
 			mainSection = document.getElementById("mainSection").innerHTML;
 			$("#mainSection").html('');
 			$(".overlay").show();
+			$('#loading-text').html('Loading');
 			var formData = new FormData(this);
 			$.ajax({
 				url: 'uploadfile',
@@ -101,6 +107,10 @@ $("#fileForm").submit(
 					}
 
 				},
+				error: function(xhr, textStatus, errorThrown){
+					$(".overlay").hide();
+					alert("Request Error: " + errorThrown); 
+				},
 				cache: false,
 				contentType: false,
 				processData: false
@@ -120,6 +130,10 @@ function loadSentimentData() {
 				loadSentiment();
 				$(".overlay").hide();
 			}
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$(".overlay").hide();
+			alert("Request Error: " + errorThrown); 
 		},
 		cache: false,
 		contentType: false,
