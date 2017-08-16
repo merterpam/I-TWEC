@@ -100,22 +100,10 @@ function onSentimentSubmit()
 {
 	var firstIndex =  $('#sentimentFirst').attr('index');
 	var secondIndex = $('#sentimentSecond').attr('index');
-	/*var length = sentimentResponse.labels.length;
-	for(var i = 0; i < length; i++) {
-		if(sentimentResponse.labels[i] == firstLabel)
-			firstIndex = i;
-		if(sentimentResponse.labels[i] == secondLabel)
-			secondIndex = i;
-	}*/
 
 	var clusterIndex = sentimentResponse.labels[secondIndex].clusterIndex;
 	sentimentResponse.labels[secondIndex].merged = true;
-	/*sentimentResponse.labels.splice(secondIndex, 1);
-	sentimentResponse.matrix.splice(secondIndex, 1);
-	for (var j = 0; j < length-1; j++) {
-		sentimentResponse.matrix[j].splice(secondIndex, 1);
-	}*/
-
+	
 	sentimentResponse.labels[firstIndex].mergedIndexes.push(clusterIndex);
 	sentimentResponse.mergeOperation = true;
 	$('#sentimentFirst').hide();
@@ -141,6 +129,7 @@ function calculateSentimentSend() {
 
 	d3.select("#mainSection").html('');
 	$(".overlay").show();
+	$('#loading-text').html('Loading');
 	$.ajax({
 		url: 'calculateSentiment',
 		type: 'POST',
@@ -150,6 +139,10 @@ function calculateSentimentSend() {
 			sentimentResponse = JSON.parse(dataRaw);
 			$(".overlay").hide();
 			loadSentiment();
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$(".overlay").hide();
+			alert("Request Error: " + errorThrown); 
 		},
 		cache: false
 	});
@@ -165,6 +158,7 @@ function onSentimentRefresh()
 
 	d3.select("#mainSection").html('');
 	$(".overlay").show();
+	$('#loading-text').html('Loading');
 	$.ajax({
 		url: 'refreshsentimentmerge',
 		type: 'POST',
@@ -182,6 +176,10 @@ function onSentimentRefresh()
 			sentimentResponse = JSON.parse(dataRaw);
 			$(".overlay").hide();
 			loadSentiment();
+		},
+		error: function(xhr, textStatus, errorThrown){
+			$(".overlay").hide();
+			alert("Request Error: " + errorThrown); 
 		},
 		cache: false
 	});
