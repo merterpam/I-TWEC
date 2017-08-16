@@ -1,5 +1,4 @@
 var gId;
-
 $(function() {
 	loadDynamicBar(0);
 	gId = 0;
@@ -52,8 +51,8 @@ function loadPage(id) {
 				if (sentimentResponse != null)
 					loadSentiment();
 				else {
-					d3.select("#mainSection").html('');
-					d3.select("#table").html('');
+					$("#mainSection").html('');
+					$("#table").html('');
 					$(".overlay").show();
 				}
 				gId = 1;
@@ -75,31 +74,40 @@ function onLoad(element) {
 }
 
 $("#fileForm").submit(
-	function onSubmit() {
+		function onSubmit() {
 
-		d3.select("#mainSection").html('');
-		$(".overlay").show();
-		var formData = new FormData(this);
-		$.ajax({
-			url: 'uploadfile',
-			type: 'POST',
-			data: formData,
-			async: true,
-			success: function(dataRaw) {
-				clusterResponse = JSON.parse(dataRaw);
-				$(".overlay").hide();
+			mainSection = document.getElementById("mainSection").innerHTML;
+			$("#mainSection").html('');
+			$(".overlay").show();
+			var formData = new FormData(this);
+			$.ajax({
+				url: 'uploadfile',
+				type: 'POST',
+				data: formData,
+				async: true,
+				success: function(dataRaw) {
+					clusterResponse = JSON.parse(dataRaw);
+					$(".overlay").hide();
 
-				loadDashboard();
-				loadSentimentData();
+					if(clusterResponse.error == null) {
+						loadDashboard();
+						loadSentimentData();
+					} else {
+						$('#filename').html('No file chosen');
+						$('#fileSubmit').html('');
+						$("#mainSection").html(mainSection);
+						alert(clusterResponse.error);
+						
+					}
 
-			},
-			cache: false,
-			contentType: false,
-			processData: false
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+
+			return false;
 		});
-
-		return false;
-	});
 
 function loadSentimentData() {
 	$.ajax({
