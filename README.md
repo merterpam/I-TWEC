@@ -8,7 +8,7 @@ I-TWEC is the interactive part of the algorithm and it works together with ST-TW
 
 # Usage
 
-In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase), [Apache Tomcat 9.0](https://tomcat.apache.org) and a word embeddings vector model. A pre-trained model based on Google News can be found on [word2vec tool]( https://code.google.com/archive/p/word2vec/). 
+In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase), [Apache Tomcat 9.0](https://tomcat.apache.org) and a word embeddings vector model. An archived pre-trained model based on Google News can be found on [this link](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing) which is produced with [word2vec tool]( https://code.google.com/archive/p/word2vec/). 
 
 You can use I-TWEC by using Maven to download the code as a dependency or putting the War file into Tomcat:
 
@@ -16,7 +16,7 @@ You can use I-TWEC by using Maven to download the code as a dependency or puttin
 
 You can clone the GitHub project and run it on Eclipse/IntelliJ. You can modify the static field WordEmbeddingsLoader#wordEmbeddingsPath to set the path of the word embeddings vector model.
 
-### 1. Maven
+### 2. Maven
 
   * Add the following to the <repositories> section of your pom.xml:
 
@@ -33,14 +33,43 @@ You can clone the GitHub project and run it on Eclipse/IntelliJ. You can modify 
 <dependency>
 	<groupId>com.github.merterpam</groupId>
 	<artifactId>I-TWEC</artifactId>
-	<version>v1.0.1</version>
+	<type>war</type>
+	<version>v1.0.2</version>
 </dependency>
 ```
 
 You can use the static method WordEmbeddingsLoader#setWordEmbeddingsPath to set the path of the word embeddings model.
 
-### 2. War file only
+### 3. War file only
 
   * Download the [latest .war and config file](https://github.com/merterpam/I-TWEC/releases) from the releases section.
   * Add the war file to the webapps directory inside Apache Tomcat directory($CATALINA_BASE/webapps). The application will be live on http://yourhost/I-TWEC . 
-  * Modify the config file to set the path of the word embeddings model and add it to the host directory inside the Apache Tomcat conf directory ($CATALINA_BASE/conf/[yourhost]/). If the directory does not exist, you can either create it yourself, or run the web application once to let it be created automatically.
+  * Modify the config file to set the path of the word embeddings model: Change the value of the environment (com.I-TWEC.wordEmbeddingsPath) to the path of the word embeddings model (bin file) in your server. Then, add the config file to the host directory inside the Apache Tomcat conf directory ($CATALINA_BASE/conf/Catalina/[yourhost]/). If the directory does not exist, you can either create it yourself, or run the web application once to let it be created automatically.
+  
+# Input/Output File Specifications
+
+The input file should contain one tweet at a line. In the input file, tweets can have labels for evaluations purposes. These labels can be added at the end of each line, separated from the tweet by a \t character. Tweet labels are optional and not required for clustering. Below is an example of input data with tweet labels:
+
+```
+This is a sample tweet #sampleTweet \t SampleTweet
+This is another sample tweet #sampleTweet \t SampleTweet 
+This is a sample tweet #sampleTweet \t SampleTweet
+Lorem ipsum dolor sit amet, consectetur adipiscing elit \t LoremIpsum
+```
+
+In the export section, you can download clustering results and evaluations. In the output file for clusters, each cluster is seperated by a new line and each cluster has a cluster label, cluster size and tweets which the cluster contains. If there are same tweets in the cluster, they are grouped and displayed in a single line. Below is an example of the output file for clusters:
+
+```
+Label: \t sample tweet \t 3
+This is a sample tweet #sampleTweet \t 2
+This is another sample tweet \t 1
+
+Label: ...
+```
+
+In the output file for evaluations, each line represents a cluster. Each line has a cluster label, cluster size and intra-cluster evaluation score. Below is an example of the output file for evaluations:
+
+```
+sample tweet \t 3 \t 0.8
+```
+
