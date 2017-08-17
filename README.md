@@ -53,7 +53,23 @@ The input file should contain one tweet at a line. In the input file, tweets can
 ```
 This is a sample tweet #sampleTweet \t SampleTweet
 This is another sample tweet #sampleTweet \t SampleTweet 
+This is a sample tweet #sampleTweet \t SampleTweet
 Lorem ipsum dolor sit amet, consectetur adipiscing elit \t LoremIpsum
 ```
 
-In the export section, you can download clustering results and evaluations. In the output file for clusters, each cluster is seperated by a new line and each cluster has a cluster label, cluster size and tweets which the cluster contains. If there are same tweets in the cluster, they are grouped and displayed in a single line. In the output file for evaluations, each line represents a cluster. Each line has a cluster label, cluster size and intra-clustr evaluation score.
+In the export section, you can download clustering results and evaluations. In the output file for clusters, each cluster is seperated by a new line and each cluster has a cluster label, cluster size and tweets which the cluster contains. If there are same tweets in the cluster, they are grouped and displayed in a single line. Below is an example of the output file for clusters:
+
+```
+Label: \t sample tweet \t 3
+This is a sample tweet #sampleTweet \t 2
+This is another sample tweet \t 1
+
+Label: ...
+```
+
+In the output file for evaluations, each line represents a cluster. Each line has a cluster label, cluster size and intra-cluster evaluation score. Below is an example of the output file for evaluations:
+
+```
+sample tweet \t 3 \t 0.8
+```
+
