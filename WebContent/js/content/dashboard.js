@@ -81,7 +81,7 @@ function reClusterSend()
 
 	d3.select("#mainSection").html('');
 	$(".overlay").show();
-	$('#loading-text').html('Loading');
+	$('#loading-text').html('Please wait');
 	$.ajax({
 		url: 'uploadClusterThreshold',
 		type: 'POST',

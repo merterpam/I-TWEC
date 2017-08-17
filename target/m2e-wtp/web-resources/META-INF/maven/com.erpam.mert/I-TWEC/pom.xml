@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.erpam.mert</groupId>
 	<artifactId>I-TWEC</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.3</version>
 	<packaging>war</packaging>
 
 	<repositories>
@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>com.github.merterpam</groupId>
 			<artifactId>ST-TWEC</artifactId>
-			<version>v1.0.0</version>
+			<version>v1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
