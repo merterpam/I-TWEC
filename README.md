@@ -48,7 +48,7 @@ You can use the static method WordEmbeddingsLoader#setWordEmbeddingsPath to set 
   
 # Input/Output File Specifications
 
-The input file should contain one tweet at a line. In the input file, tweets can have labels for evaluations purposes. These labels can be added at the end of each line, separated from the tweet by a \t character. Tweet labels are optional and not required for clustering. Below is an example of input data with tweet labels:
+The input file should contain one tweet at a line. In the input file, tweets can have labels for evaluations purposes. These labels can be added at the end of each line, separated from the tweet by a \t character. Tweet labels are optional and not required for clustering. Because we use tab character as a seperator, tweets should not contain any \tBelow is an example of input data with tweet labels:
 
 ```
 This is a sample tweet #sampleTweet \t SampleTweet
