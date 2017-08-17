@@ -45,3 +45,15 @@ You can use the static method WordEmbeddingsLoader#setWordEmbeddingsPath to set 
   * Download the [latest .war and config file](https://github.com/merterpam/I-TWEC/releases) from the releases section.
   * Add the war file to the webapps directory inside Apache Tomcat directory($CATALINA_BASE/webapps). The application will be live on http://yourhost/I-TWEC . 
   * Modify the config file to set the path of the word embeddings model: Change the value of the environment (com.I-TWEC.wordEmbeddingsPath) to the path of the word embeddings model (bin file) in your server. Then, add the config file to the host directory inside the Apache Tomcat conf directory ($CATALINA_BASE/conf/Catalina/[yourhost]/). If the directory does not exist, you can either create it yourself, or run the web application once to let it be created automatically.
+  
+# Input/Output File Specifications
+
+The input file should contain one tweet at a line. In the input file, tweets can have labels for evaluations purposes. These labels can be added at the end of each line, separated from the tweet by a \t character. Tweet labels are optional and not required for clustering. Below is an example of input data with tweet labels:
+
+```
+This is a sample tweet #sampleTweet \t SampleTweet
+This is another sample tweet #sampleTweet \t SampleTweet 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit \t LoremIpsum
+```
+
+In the export section, you can download clustering results and evaluations. In the output file for clusters, each cluster is seperated by a new line and each cluster has a cluster label, cluster size and tweets which the cluster contains. If there are same tweets in the cluster, they are grouped and displayed in a single line. In the output file for evaluations, each line represents a cluster. Each line has a cluster label, cluster size and intra-clustr evaluation score.
