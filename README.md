@@ -8,7 +8,7 @@ I-TWEC is the interactive part of the algorithm and it works together with ST-TW
 
 # Usage
 
-In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase), [Apache Tomcat 9.0](https://tomcat.apache.org) and a word embeddings vector model. A pre-trained model based on Google News can be found on [word2vec tool]( https://code.google.com/archive/p/word2vec/). 
+In order to use this tool, you require [Java Runtime Environment 8](http://www.oracle.com/technetwork/java/javase), [Apache Tomcat 9.0](https://tomcat.apache.org) and a word embeddings vector model. An archived pre-trained model based on Google News can be found on [this link](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing) which is produced with [word2vec tool]( https://code.google.com/archive/p/word2vec/). 
 
 You can use I-TWEC by using Maven to download the code as a dependency or putting the War file into Tomcat:
 
@@ -16,7 +16,7 @@ You can use I-TWEC by using Maven to download the code as a dependency or puttin
 
 You can clone the GitHub project and run it on Eclipse/IntelliJ. You can modify the static field WordEmbeddingsLoader#wordEmbeddingsPath to set the path of the word embeddings vector model.
 
-### 1. Maven
+### 2. Maven
 
   * Add the following to the <repositories> section of your pom.xml:
 
@@ -40,8 +40,8 @@ You can clone the GitHub project and run it on Eclipse/IntelliJ. You can modify 
 
 You can use the static method WordEmbeddingsLoader#setWordEmbeddingsPath to set the path of the word embeddings model.
 
-### 2. War file only
+### 3. War file only
 
   * Download the [latest .war and config file](https://github.com/merterpam/I-TWEC/releases) from the releases section.
   * Add the war file to the webapps directory inside Apache Tomcat directory($CATALINA_BASE/webapps). The application will be live on http://yourhost/I-TWEC . 
-  * Modify the config file to set the path of the word embeddings model and add it to the host directory inside the Apache Tomcat conf directory ($CATALINA_BASE/conf/[yourhost]/). If the directory does not exist, you can either create it yourself, or run the web application once to let it be created automatically.
+  * Modify the config file to set the path of the word embeddings model: Change the value of the environment (com.I-TWEC.wordEmbeddingsPath) to the path of the word embeddings model (bin file) in your server. Then, add the config file to the host directory inside the Apache Tomcat conf directory ($CATALINA_BASE/conf/Catalina/[yourhost]/). If the directory does not exist, you can either create it yourself, or run the web application once to let it be created automatically.
