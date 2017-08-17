@@ -58,7 +58,7 @@ function loadPage(id) {
 					$("#mainSection").html('');
 					$("#table").html('');
 					$(".overlay").show();
-					$('#loading-text').html('Loading');
+					$('#loading-text').html('Please wait');
 				}
 				gId = 1;
 				$('#fileSubmit').hide();
@@ -84,7 +84,7 @@ $("#fileForm").submit(
 			mainSection = document.getElementById("mainSection").innerHTML;
 			$("#mainSection").html('');
 			$(".overlay").show();
-			$('#loading-text').html('Loading');
+			$('#loading-text').html('Please wait');
 			var formData = new FormData(this);
 			$.ajax({
 				url: 'uploadfile',
