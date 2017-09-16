@@ -121,7 +121,6 @@ function calculateSentimentSend() {
     var formData = {
         "clusterThreshold": dashBoardData.clusterThreshold,
         "clusterLimit": sentimentData.displayedClusterSize,
-        "sentimentThreshold": sentimentData.sentimentThreshold,
         "shortTextLength": sentimentData.shortTextThreshold,
         "embeddingDimension": 100
     };
@@ -162,7 +161,6 @@ function onSentimentRefresh() {
             {
                 loadProds: 1,
                 clusterLimit: sentimentData.displayedClusterSize,
-                sentimentThreshold: sentimentData.sentimentThreshold,
                 shortTextLength: sentimentData.shortTextThreshold,
                 embeddingDimension: 100,
                 responseData: JSON.stringify(sentimentResponse)

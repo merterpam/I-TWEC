@@ -67,8 +67,8 @@ function loadDashboard() {
 function reClusterSend() {
     var formData =
         {
-            "clusterThreshold": dashBoardData.clusterThreshold,
             "clusterLimit": sentimentData.displayedClusterSize,
+            "clusterThreshold": dashBoardData.clusterThreshold,
             "sentimentThreshold": sentimentData.sentimentThreshold,
             "shortTextLength": sentimentData.shortTextThreshold,
             "embeddingDimension": 100
@@ -83,7 +83,7 @@ function reClusterSend() {
         data: formData,
         async: true,
         success: function (dataRaw) {
-            clusterResponse = JSON.parse(dataRaw);
+            clusterResponse = dataRaw;
             bubbleChart.data = clusterResponse.clusters;
             barChart.data = clusterResponse.clusters;
             $(".overlay").hide();

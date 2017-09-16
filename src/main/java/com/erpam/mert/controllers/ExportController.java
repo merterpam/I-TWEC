@@ -1,6 +1,6 @@
 package com.erpam.mert.controllers;
 
-import com.erpam.mert.application.ClusterApplication;
+import com.erpam.mert.application.ClusteringTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,8 +17,14 @@ import java.nio.file.Files;
 public class ExportController {
 
     @Autowired
-    private ClusterApplication clusterApplication;
+    private ClusteringTool clusterApplication;
 
+    /**
+     * Downloads cluster evaluations
+     *
+     * @return cluster evaluations
+     * @throws IOException if the file which contains evaluations does not exist
+     */
     @PostMapping("/downloadevaluation")
     public ResponseEntity<byte[]> downloadEvaluation() throws IOException {
 
@@ -31,6 +37,11 @@ public class ExportController {
         return new ResponseEntity<>(Files.readAllBytes(file.toPath()), responseHeaders, HttpStatus.CREATED);
     }
 
+    /**
+     * Downloads clusters
+     * @return clusters
+     * @throws IOException if the file which contains clusters does not exist
+     */
     @PostMapping("/downloadclusters")
     public ResponseEntity<byte[]> downloadClusters() throws IOException {
 

@@ -1,6 +1,6 @@
 package com.erpam.mert.controllers;
 
-import com.erpam.mert.application.ClusterApplication;
+import com.erpam.mert.application.ClusteringTool;
 import com.erpam.mert.models.response.Response;
 import com.erpam.mert.models.response.SentimentResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,53 +10,64 @@ import org.springframework.web.bind.annotation.*;
 public class SentimentClusterController {
 
     @Autowired
-    private ClusterApplication clusterApplication;
+    private ClusteringTool clusterApplication;
 
+    /**
+     * Calculates the semantic relatedness between clusters and returns the results
+     *
+     * @param clusterLimit       is the number of calculated clusters
+     * @param embeddingDimension is the word embeddings embeddingsDimension
+     * @param shortTextLength    is the minimum length a cluster label must have to be included into the calculation
+     * @return 2D array containing the sentiment relatedness score between clusters
+     */
     @PostMapping("/calculateSentiment")
     public @ResponseBody
-    Response calculateSentiment(@RequestParam("embeddingDimension") int embeddingDimension,
-                                @RequestParam("clusterLimit") int clusterLimit,
-                                @RequestParam("sentimentThreshold") float sentimentThreshold,
+    Response calculateSentiment(@RequestParam("clusterLimit") int clusterLimit,
+                                @RequestParam("embeddingDimension") int embeddingDimension,
                                 @RequestParam("shortTextLength") int shortTextLength) {
 
-        clusterApplication.setEmbeddingDimension(embeddingDimension);
-        clusterApplication.setClusterLimit(clusterLimit);
-        clusterApplication.setSentimentThreshold(sentimentThreshold);
-        clusterApplication.setShortTextLength(shortTextLength);
-
-        return clusterApplication.reCalculateSentiment();
+        return clusterApplication.calculateLabelSentiment(clusterLimit, embeddingDimension, shortTextLength);
     }
 
+    /**
+     * Gets the sentiment relatedness score results between clusters
+     *
+     * @return the sentiment relatedness score results between clusters
+     * @throws InterruptedException
+     */
     @PostMapping("/loadsentiment")
     public @ResponseBody
-    Response loadSentiment() throws InterruptedException {
-        String directoryPath = clusterApplication.getDirectoryPath();
-
-        System.out.println("Serialization is done, deserializating sentiment");
-
+    Response getSentimentResponse() throws InterruptedException {
         return clusterApplication.getSentimentResponse();
-        //return Utility.deserialize(directoryPath + "sResponse.ser", Utility.sentimentMutex);
     }
 
+    /**
+     * Merges the clusters based on user's choice and reloads new clusters
+     *
+     * @param sentimentResponse  contains the user's merging choices
+     * @param clusterLimit       is the number of calculated clusters
+     * @param embeddingDimension is the word embeddings embeddingsDimension
+     * @param shortTextLength    is the minimum length a cluster label must have to be included into the calculation
+     * @return 2D array containing the sentiment relatedness score between clusters
+     */
     @PostMapping("/refreshsentimentmerge")
     public @ResponseBody
     Response doPost(@ModelAttribute("responseData") SentimentResponse sentimentResponse,
-                    @RequestParam("embeddingDimension") int embeddingDimension,
                     @RequestParam("clusterLimit") int clusterLimit,
-                    @RequestParam("sentimentThreshold") float sentimentThreshold,
+                    @RequestParam("embeddingDimension") int embeddingDimension,
                     @RequestParam("shortTextLength") int shortTextLength) {
-
-        clusterApplication.setEmbeddingDimension(embeddingDimension);
-        clusterApplication.setClusterLimit(clusterLimit);
-        clusterApplication.setSentimentThreshold(sentimentThreshold);
-        clusterApplication.setShortTextLength(shortTextLength);
 
         if (sentimentResponse != null && sentimentResponse.isMergeOperation())
             clusterApplication.mergeClusters(sentimentResponse);
 
-        return clusterApplication.reCalculateSentiment();
+        return clusterApplication.calculateLabelSentiment(clusterLimit, embeddingDimension, shortTextLength);
     }
 
+    /**
+     * Merges the clusters based on user's choice
+     *
+     * @param sentimentResponse contains the user's merging choices
+     */
     @PostMapping("/uploadsentimentmerge")
     public void uploadSentimentMerge(@ModelAttribute("responseData") SentimentResponse sentimentResponse) {
 

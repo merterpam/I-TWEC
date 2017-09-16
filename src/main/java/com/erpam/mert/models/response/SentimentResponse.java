@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class SentimentResponse implements Response {
 
@@ -15,7 +15,7 @@ public class SentimentResponse implements Response {
      */
     private static final long serialVersionUID = 1L;
 
-    private ArrayList<Label> labels;
+    private List<Label> labels;
 
     private float[][] matrix;
     private int size;
@@ -26,7 +26,7 @@ public class SentimentResponse implements Response {
 
     }
 
-    public SentimentResponse(ArrayList<Label> labels) {
+    public SentimentResponse(List<Label> labels) {
         this.setLabels(labels);
         size = labels.size();
         setMatrix(new float[size][]);
@@ -146,12 +146,12 @@ public class SentimentResponse implements Response {
     }
 
 
-    public ArrayList<Label> getLabels() {
+    public List<Label> getLabels() {
         return labels;
     }
 
 
-    private void setLabels(ArrayList<Label> labels) {
+    private void setLabels(List<Label> labels) {
         this.labels = labels;
     }
 

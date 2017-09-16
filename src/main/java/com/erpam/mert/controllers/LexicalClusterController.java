@@ -1,7 +1,7 @@
 package com.erpam.mert.controllers;
 
 import com.erpam.mert.ST_TWEC.model.Tweet;
-import com.erpam.mert.application.ClusterApplication;
+import com.erpam.mert.application.ClusteringTool;
 import com.erpam.mert.models.response.ClusterResponse;
 import com.erpam.mert.models.response.ErrorResponse;
 import com.erpam.mert.models.response.Response;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,39 +24,45 @@ import java.util.ArrayList;
 public class LexicalClusterController {
 
     @Autowired
-    private ClusterApplication clusterApplication;
+    private ClusteringTool clusterApplication;
 
+    /**
+     * Uploads tweets to the server and runs the clustering tool
+     *
+     * @param clusterLimit       is the number of clusters whose semantic relatedness' are calculated
+     * @param clusterThreshold   is the threshold for lexical clustering
+     * @param embeddingDimension is the word embeddings dimension
+     * @param shortTextThreshold is the minimum length of a label whose semantic relatedness is calculated
+     * @param file               is the uploaded file
+     * @param request            is the Http request
+     * @return lexical clustering results
+     * @throws IOException if the uploaded file cannot be opened
+     */
     @PostMapping("/uploadfile")
     public @ResponseBody
-    Response clusterUploadedFile(@RequestParam("file") MultipartFile file,
-                                 @RequestParam("embeddingDimension") int embeddingDimension,
-                                 @RequestParam("sentimentThreshold") float sentimentThreshold,
-                                 @RequestParam("shortTextLength") int shortTextLength,
-                                 @RequestParam("clusterLimit") int clusterLimit,
+    Response clusterUploadedFile(@RequestParam("clusterLimit") int clusterLimit,
                                  @RequestParam("clusterThreshold") float clusterThreshold,
-                                 HttpServletRequest request, HttpServletResponse response) throws IOException {
+                                 @RequestParam("embeddingDimension") int embeddingDimension,
+                                 @RequestParam("file") MultipartFile file,
+                                 @RequestParam("shortTextLength") int shortTextThreshold,
 
+                                 HttpServletRequest request) throws IOException {
 
         HttpSession session = request.getSession(true);
 
-        clusterApplication.setDirectoryPath(session.getServletContext().getRealPath("/tempFiles/") + session.getId() + "/");
+        String directoryPath = session.getServletContext().getRealPath("/tempFiles/") + session.getId() + "/";
+        String filename = file.getOriginalFilename().substring(0, file.getOriginalFilename().length() - 4);
 
-        clusterApplication.setClusterThreshold(clusterThreshold);
-
-        clusterApplication.setEmbeddingDimension(embeddingDimension);
-        clusterApplication.setClusterLimit(clusterLimit);
-        clusterApplication.setSentimentThreshold(sentimentThreshold);
-        clusterApplication.setShortTextLength(shortTextLength);
+        clusterApplication.setDirectoryPath(directoryPath);
+        clusterApplication.setFilename(filename);
 
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF8"));
-        String fileName = file.getOriginalFilename();
-        clusterApplication.setFileName(fileName.substring(0, fileName.length() - 4));
-
         ArrayList<Tweet> tweets = Utility.readStream(inputReader);
 
         if (tweets != null) {
-            clusterApplication.setTweets(tweets);
-            ClusterResponse obj = clusterApplication.clusterTweets();
+
+            ClusterResponse obj = clusterApplication.clusterTweets(clusterLimit, clusterThreshold,
+                    embeddingDimension, shortTextThreshold, tweets);
             if (obj != null) {
                 if (obj.getClusterSize() != 0) {
                     return obj;
@@ -72,12 +77,22 @@ public class LexicalClusterController {
         }
     }
 
-
+    /**
+     * Reruns the clustering tool with the updated parameters
+     *
+     * @param clusterLimit       is the number of clusters whose semantic relatedness' are calculated
+     * @param clusterThreshold   is the threshold for lexical clustering
+     * @param embeddingDimension is the word embeddings dimension
+     * @param shortTextThreshold is the minimum length of a label whose semantic relatedness is calculated
+     * @return lexical clustering results
+     */
     @PostMapping("/uploadClusterThreshold")
     public @ResponseBody
-    Response reClusterUploadedFile(@RequestParam("clusterThreshold") float clusterThreshold) {
+    Response reClusterUploadedFile(@RequestParam("clusterLimit") int clusterLimit,
+                                   @RequestParam("clusterThreshold") float clusterThreshold,
+                                   @RequestParam("embeddingDimension") int embeddingDimension,
+                                   @RequestParam("shortTextLength") int shortTextThreshold) {
 
-        clusterApplication.setClusterThreshold(clusterThreshold);
-        return clusterApplication.reCluster();
+        return clusterApplication.recluster(clusterLimit, clusterThreshold, embeddingDimension, shortTextThreshold);
     }
 }
