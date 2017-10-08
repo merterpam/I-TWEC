@@ -11,7 +11,7 @@ $(function() {
 		} // Remove c:\fake at beginning from localhost chrome
 		$('#filename').html(filename);
 
-		$('#fileSubmit').html('<a href="" class="btn btn-default">Upload</a>');
+		$('#fileSubmit').html('<a href="javascript:void(0)" class="btn btn-default">Upload</a>');
 	});
 
 	$('#fileSubmit').click(function() {
