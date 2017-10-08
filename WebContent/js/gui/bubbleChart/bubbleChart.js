@@ -23,7 +23,7 @@ var BubbleChart;
       this.max_amount = d3.max(this.data, function(d) {
         return d.tweetSize;
       });
-      this.radius_scale = d3.scale.pow().exponent(0.5).domain([10, this.max_amount]).range([1, 1500000 / d3.sum(data, function(d) { return d.tweetSize; })]);
+      this.radius_scale = d3.scale.pow().exponent(1).domain([10, d3.sum(data, function(d) { return d.tweetSize; })]).range([1,3600]);
       this.create_nodes();
       this.create_vis();
     }
