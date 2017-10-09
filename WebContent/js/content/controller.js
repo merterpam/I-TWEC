@@ -1,7 +1,9 @@
 var gId;
+var mainSection;
 $(function() {
 	loadDynamicBar(0);
 	gId = 0;
+	mainSection = document.getElementById("mainSection").innerHTML;
 
 	$('#fileLoad').change(function() {
 
@@ -39,7 +41,7 @@ function loadDynamicBar(id) {
 }
 
 function loadPage(id) {
-	if (clusterResponse != null) {
+	if (clusterResponse != null && clusterResponse.error == null) {
 		loadDynamicBar(id);
 		if (id != gId) {
 			if (id == 0) //Dashboard
@@ -80,8 +82,7 @@ function onLoad(element) {
 
 $("#fileForm").submit(
 		function onSubmit() {
-
-			mainSection = document.getElementById("mainSection").innerHTML;
+			
 			$("#mainSection").html('');
 			$(".overlay").show();
 			$('#loading-text').html('Please wait');
@@ -99,8 +100,8 @@ $("#fileForm").submit(
 						loadDashboard();
 						loadSentimentData();
 					} else {
-						$('#filename').html('No file chosen');
-						$('#fileSubmit').html('');
+						//$('#filename').html('No file chosen');
+						//$('#fileSubmit').html('');
 						$("#mainSection").html(mainSection);
 						alert(clusterResponse.error);
 						
@@ -109,6 +110,7 @@ $("#fileForm").submit(
 				},
 				error: function(xhr, textStatus, errorThrown){
 					$(".overlay").hide();
+					$("#mainSection").html(mainSection);
 					alert("Request Error: " + errorThrown); 
 				},
 				cache: false,

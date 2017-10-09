@@ -36,10 +36,7 @@ function loadDashboard() {
 	}
 	else
 	{
-		bubbleChart.chart = bubbleDiv;
-		bubbleChart.tableDiv = tableDiv;
-		bubbleChart.create_nodes();
-		bubbleChart.create_vis();
+		bubbleChart.initialize(clusterResponse.clusters, bubbleDiv, tableDiv);
 		bubbleChart.start();
 		bubbleChart.display_group_all();
 	}
@@ -49,6 +46,7 @@ function loadDashboard() {
 			barChart = new BarChart(clusterResponse.clusters, barDiv);
 	else
 	{
+		barChart.data = clusterResponse.clusters;
 		barChart.chart = barDiv;
 	}
 	barChart.create_gui();
