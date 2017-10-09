@@ -73,3 +73,4 @@ In the output file for evaluations, each line represents a cluster. Each line ha
 sample tweet \t 3 \t 0.8
 ```
 
+A sample dataset can be found on: https://drive.google.com/file/d/0B2jTp9YVvMC1cm1udEVzVlNlRFk/view?usp=sharing
