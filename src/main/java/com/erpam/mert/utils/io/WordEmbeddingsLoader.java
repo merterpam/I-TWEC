@@ -1,10 +1,13 @@
 package com.erpam.mert.utils.io;
 
 import com.utils.Utility;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.HashMap;
 
+@Component
 public class WordEmbeddingsLoader {
 
     private static final int MAX_SIZE = 50;
@@ -15,7 +18,7 @@ public class WordEmbeddingsLoader {
     private int wordCount;
     private int vectorSize;
 
-    public WordEmbeddingsLoader(String newWordEmbeddingsPath) {
+    public WordEmbeddingsLoader(@Value("/Users/mert/Documents/WordEmbedding/GoogleNews-vectors-negative300.bin") String newWordEmbeddingsPath) {
         wordEmbeddingsPath = newWordEmbeddingsPath;
         wordMapping = new HashMap<String, Long>();
         long startTime = System.nanoTime();

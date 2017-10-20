@@ -10,8 +10,11 @@ import com.erpam.mert.models.response.ClusterResponse;
 import com.erpam.mert.models.response.SentimentResponse;
 import com.erpam.mert.utils.io.WordEmbeddingsLoader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-@Service
+@Component
+@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
 public class TWECTool implements ClusteringTool {
 
     /**
@@ -207,6 +211,7 @@ public class TWECTool implements ClusteringTool {
         return cR;
     }
 
+    @PreDestroy
     public void OnDestroy() {
         System.out.println("I-TWEC Tool is destroyed");
     }
