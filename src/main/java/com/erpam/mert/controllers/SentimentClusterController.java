@@ -21,8 +21,8 @@ public class SentimentClusterController {
      * @return 2D array containing the sentiment relatedness score between clusters
      */
     @PostMapping("/calculateSentiment")
-    public @ResponseBody
-    Response calculateSentiment(@RequestParam("clusterLimit") int clusterLimit,
+    @ResponseBody
+    public Response calculateSentiment(@RequestParam("clusterLimit") int clusterLimit,
                                 @RequestParam("embeddingDimension") int embeddingDimension,
                                 @RequestParam("shortTextLength") int shortTextLength) {
 
@@ -36,8 +36,8 @@ public class SentimentClusterController {
      * @throws InterruptedException
      */
     @PostMapping("/loadsentiment")
-    public @ResponseBody
-    Response getSentimentResponse() throws InterruptedException {
+    @ResponseBody
+    public Response getSentimentResponse() throws InterruptedException {
         return clusterApplication.getSentimentResponse();
     }
 
@@ -51,8 +51,8 @@ public class SentimentClusterController {
      * @return 2D array containing the sentiment relatedness score between clusters
      */
     @PostMapping("/refreshsentimentmerge")
-    public @ResponseBody
-    Response doPost(@ModelAttribute("responseData") SentimentResponse sentimentResponse,
+    @ResponseBody
+    public Response doPost(@ModelAttribute("responseData") SentimentResponse sentimentResponse,
                     @RequestParam("clusterLimit") int clusterLimit,
                     @RequestParam("embeddingDimension") int embeddingDimension,
                     @RequestParam("shortTextLength") int shortTextLength) {

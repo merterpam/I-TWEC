@@ -7,6 +7,8 @@ import com.erpam.mert.ST_TWEC.model.Cluster;
 import com.erpam.mert.ST_TWEC.model.Tweet;
 import com.erpam.mert.models.Label;
 import com.erpam.mert.models.response.ClusterResponse;
+import com.erpam.mert.models.response.ErrorResponse;
+import com.erpam.mert.models.response.Response;
 import com.erpam.mert.models.response.SentimentResponse;
 import com.erpam.mert.utils.io.WordEmbeddingsLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -111,11 +111,16 @@ public class TWECTool implements ClusteringTool {
      * @param clusterThreshold   is the threshold for lexical clustering
      * @param embeddingDimension is the word embeddings dimension
      * @param shortTextThreshold is the minimum length of a label whose semantic relatedness is calculated
-     * @param tweets             is the array of tweets which are clustered
+     * @param tweets             is the list of tweets to be clustered
      * @return results of the lexical clustering
      */
-    public ClusterResponse clusterTweets(int clusterLimit, float clusterThreshold, int embeddingDimension,
-                                         int shortTextThreshold, List<Tweet> tweets) {
+    public Response clusterTweets(int clusterLimit, float clusterThreshold, int embeddingDimension,
+                                  int shortTextThreshold, List<Tweet> tweets) throws UnsupportedEncodingException {
+
+
+        if (tweets == null) {
+            return new ErrorResponse("Invalid Data Format. \nPlease format your data and try again");
+        }
 
         TweetPreprocessor tweetPreprocessor = new TweetPreprocessor(0.6f, tweets);
         tweetPreprocessor.preProcessTweets();
@@ -133,10 +138,14 @@ public class TWECTool implements ClusteringTool {
             ClusterResponse cR = new ClusterResponse(clusterTool.getClusters());
             asyncSentimentAndSerialization(clusterLimit, directoryPath, embeddingDimension, shortTextThreshold);
 
-            return cR;
+            if (cR.getClusterSize() != 0)
+                return cR;
+            else {
+                return new ErrorResponse("We could not form any clusters with the given dataset");
+            }
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
-            return null;
+            return new ErrorResponse("We could not process the data. Please try again later or try with a smaller set of data.");
         }
     }
 
@@ -166,25 +175,25 @@ public class TWECTool implements ClusteringTool {
     }
 
     /**
-     * Prints the clusters to the file and returns the file
+     * Writes the clusters into a file and returss it in a byte array
      *
-     * @return the file which contains clusters
+     * @return the byte array of the file which contains clusters
      */
-    public File printClusters() {
-        return evaluator.printClusters(directoryPath);
+    public byte[] printClusters() throws IOException {
+        return Files.readAllBytes(evaluator.printClusters(directoryPath).toPath());
     }
 
     /**
-     * Prints the evaluations to the file and returns the file
+     * Evaluates the clusters and returns the file which stores the evaluation results in a byte array
      *
-     * @return the file which contains evaluations
+     * @return the byte array of the file which contains evaluations
      */
-    public File printEvaluations() {
+    public byte[] printEvaluations() throws IOException {
         evaluator.evaluateClusters();
 
         File file = evaluator.printEvaluationResults(directoryPath);
         evaluator.printSummary(directoryPath, -1);
-        return file;
+        return Files.readAllBytes(file.toPath());
     }
 
     /**
