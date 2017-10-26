@@ -53,3 +53,4 @@ local.properties
 .classpath
 .DS_Store
 /target/
+.idea/
