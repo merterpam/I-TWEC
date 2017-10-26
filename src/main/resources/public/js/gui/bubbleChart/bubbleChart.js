@@ -2,12 +2,16 @@ var BubbleChart;
 
 BubbleChart = (function () {
     function BubbleChart(data, chart, tableDiv) {
+        this.tooltip = CustomTooltip("gates_tooltip", 240);
+        this.initialize(data, chart, tableDiv);
+    }
+
+    BubbleChart.prototype.initialize = function (data, chart, tableDiv) {
         this.data = data;
         this.tableDiv = tableDiv;
         this.chart = chart;
         this.width = 440;
         this.height = 350;
-        this.tooltip = CustomTooltip("gates_tooltip", 240);
         this.center = {
             x: this.width / 2,
             y: this.height / 2
@@ -23,17 +27,17 @@ BubbleChart = (function () {
         this.max_amount = d3.max(this.data, function (d) {
             return d.tweetSize;
         });
-        this.radius_scale = d3.scale.pow().exponent(0.5).domain([10, this.max_amount]).range([1, 1500000 / d3.sum(data, function (d) {
-            return d.tweetSize;
-        })]);
+        this.radius_scale = d3.scale.pow().exponent(1).domain([0, this.max_amount]).range([0, 50]);
         this.create_nodes();
         this.create_vis();
-    }
+    };
 
     BubbleChart.prototype.create_nodes = function () {
         var i = 0;
         var dividend = this.max_amount / 3;
+        var minVal = Math.min(this.max_amount / 50, 10);
         this.nodes = [];
+
         this.data.forEach((function (_this) {
             return function (d) {
                 var node;
@@ -46,7 +50,7 @@ BubbleChart = (function () {
                     x: Math.random() * 900,
                     y: Math.random() * 800
                 };
-                if (node.value > 9)
+                if (node.value > minVal)
                     _this.nodes.push(node);
             };
         })(this));
@@ -126,7 +130,6 @@ BubbleChart = (function () {
         }
         content += '</table>';
         this.tableDiv.html(content);
-        //content =
     };
 
     BubbleChart.prototype.show_details = function (data, i, element) {
@@ -149,7 +152,3 @@ BubbleChart = (function () {
     return BubbleChart;
 
 })();
-
-
-
-
