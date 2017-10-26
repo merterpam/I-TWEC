@@ -1,7 +1,9 @@
 var gId;
+var mainSection;
 $(function () {
     loadDynamicBar(0);
     gId = 0;
+    mainSection = document.getElementById("mainSection").innerHTML;
 
     $('#fileLoad').change(function () {
 
@@ -11,7 +13,7 @@ $(function () {
         } // Remove c:\fake at beginning from localhost chrome
         $('#filename').html(filename);
 
-        $('#fileSubmit').html('<a href="" class="btn btn-default">Upload</a>');
+        $('#fileSubmit').html('<a href="javascript:void(0)" class="btn btn-default">Upload</a>');
     });
 
     $('#fileSubmit').click(function () {
@@ -39,7 +41,7 @@ function loadDynamicBar(id) {
 }
 
 function loadPage(id) {
-    if (clusterResponse != null) {
+    if (clusterResponse != null && clusterResponse.error == null) {
         loadDynamicBar(id);
         if (id != gId) {
             if (id == 0) //Dashboard
@@ -81,10 +83,11 @@ function onLoad(element) {
 $("#fileForm").submit(
     function onSubmit() {
 
-        mainSection = document.getElementById("mainSection").innerHTML;
         $("#mainSection").html('');
         $(".overlay").show();
         $('#loading-text').html('Please wait');
+        var tableDiv = d3.select("#table");
+        tableDiv.html("");
         var formData = new FormData(this);
         $.ajax({
             url: 'uploadfile',
@@ -99,8 +102,6 @@ $("#fileForm").submit(
                     loadDashboard();
                     loadSentimentData();
                 } else {
-                    $('#filename').html('No file chosen');
-                    $('#fileSubmit').html('');
                     $("#mainSection").html(mainSection);
                     alert(clusterResponse.error);
 
@@ -109,6 +110,7 @@ $("#fileForm").submit(
             },
             error: function (xhr, textStatus, errorThrown) {
                 $(".overlay").hide();
+                $("#mainSection").html(mainSection);
                 alert("Request Error: " + errorThrown);
             },
             cache: false,
