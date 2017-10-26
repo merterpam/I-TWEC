@@ -10,9 +10,7 @@ target/
 .springBeans
 
 ### IntelliJ IDEA ###
-.idea
 *.iws
-*.iml
 *.ipr
 
 ### NetBeans ###
@@ -25,3 +23,7 @@ nbdist/
 *.class
 src/.DS_Store
 .DS_Store
+.idea/artifacts/
+
+.idea/workspace.xml
+.idea/workspace.xml
